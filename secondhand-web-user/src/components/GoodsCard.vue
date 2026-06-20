@@ -36,6 +36,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { PictureFilled, View } from '@element-plus/icons-vue'
+import { conditionLabel } from '../utils/condition'
 
 const props = defineProps({
   goods: { type: Object, required: true }
@@ -43,16 +44,8 @@ const props = defineProps({
 
 const imgError = ref(false)
 
-const conditionMap = {
-  'brand_new': '全新',
-  'like_new': '几乎全新',
-  'good': '良好',
-  'fair': '一般',
-  'old': '老旧'
-}
-
 const conditionText = computed(() => {
-  return conditionMap[props.goods.conditionLevel] || props.goods.conditionLevel || '未知'
+  return conditionLabel(props.goods.conditionLevel)
 })
 
 function handleImageError() {

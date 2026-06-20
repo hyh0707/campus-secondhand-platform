@@ -1,5 +1,6 @@
 # Java / Maven
 target/
+**/target/
 *.class
 *.jar
 *.war
@@ -7,26 +8,41 @@ target/
 
 # Logs
 logs/
+**/logs/
 *.log
 
 # Vue / Node
 node_modules/
+**/node_modules/
 dist/
+**/dist/
 .vite/
-.env.local
-.env.*.local
+**/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+!.env.example
 
 # Android
 .gradle/
+**/.gradle/
 build/
+**/build/
 local.properties
 *.apk
 *.aab
 
 # IDE
 .idea/
+**/.idea/
 *.iml
 .vscode/
+**/.vscode/
 
 # OS
 .DS_Store
@@ -35,7 +51,11 @@ Thumbs.db
 # Upload files
 upload/
 uploads/
+**/upload/
+**/uploads/
 
 # Temp
 tmp/
 temp/
+**/tmp/
+**/temp/

@@ -18,6 +18,7 @@
             <el-icon><Plus /></el-icon>
             发布
           </router-link>
+          <router-link to="/my-goods" class="nav-link">我的商品</router-link>
           <router-link to="/profile" class="user-area">
             <el-avatar :size="34" :src="avatarUrl" class="user-avatar" @error="handleAvatarError">
               {{ (userStore.userInfo?.nickname || userStore.userInfo?.username || 'U')[0] }}

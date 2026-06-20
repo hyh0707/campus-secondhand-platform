@@ -115,11 +115,11 @@ const categories = [
 ]
 
 const conditions = [
-  { value: 'brand_new', label: '全新' },
-  { value: 'like_new', label: '几乎全新' },
-  { value: 'good', label: '良好' },
-  { value: 'fair', label: '一般' },
-  { value: 'old', label: '老旧' }
+  { value: '10', label: '全新' },
+  { value: '9', label: '九成新' },
+  { value: '8', label: '八成新' },
+  { value: '7', label: '七成新' },
+  { value: '6', label: '六成新及以下' }
 ]
 
 async function fetchGoods() {

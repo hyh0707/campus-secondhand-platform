@@ -65,7 +65,7 @@
             <div class="meta-grid">
               <div class="meta-item">
                 <span class="meta-label">成色</span>
-                <el-tag :type="conditionTagType" size="small">{{ conditionText }}</el-tag>
+                <el-tag :type="conditionTagTypeValue" size="small">{{ conditionText }}</el-tag>
               </div>
               <div class="meta-item">
                 <span class="meta-label">发布时间</span>
@@ -122,6 +122,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArrowLeft, Loading, PictureFilled, WarningFilled } from '@element-plus/icons-vue'
 import { getGoodsDetail } from '../api/goods'
+import { conditionLabel, conditionTagType } from '../utils/condition'
 
 const route = useRoute()
 const goods = ref(null)
@@ -136,24 +137,8 @@ const currentImage = computed(() => {
   return images[currentImageIdx.value]?.imageUrl || ''
 })
 
-const conditionMap = {
-  'brand_new': '全新',
-  'like_new': '几乎全新',
-  'good': '良好',
-  'fair': '一般',
-  'old': '老旧'
-}
-
-const conditionTagTypeMap = {
-  'brand_new': 'success',
-  'like_new': '',
-  'good': 'primary',
-  'fair': 'warning',
-  'old': 'danger'
-}
-
-const conditionText = computed(() => conditionMap[goods.value?.conditionLevel] || '未知')
-const conditionTagType = computed(() => conditionTagTypeMap[goods.value?.conditionLevel] || 'info')
+const conditionText = computed(() => conditionLabel(goods.value?.conditionLevel))
+const conditionTagTypeValue = computed(() => conditionTagType(goods.value?.conditionLevel))
 
 const descriptionLines = computed(() => {
   if (!goods.value?.description) return []

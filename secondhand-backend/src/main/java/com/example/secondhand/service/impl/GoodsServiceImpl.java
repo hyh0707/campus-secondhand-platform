@@ -10,9 +10,13 @@ import com.example.secondhand.dto.GoodsQueryDTO;
 import com.example.secondhand.dto.GoodsUpdateDTO;
 import com.example.secondhand.entity.Goods;
 import com.example.secondhand.entity.GoodsImage;
+import com.example.secondhand.entity.BrowseHistory;
+import com.example.secondhand.entity.SearchHistory;
 import com.example.secondhand.entity.User;
 import com.example.secondhand.mapper.GoodsImageMapper;
 import com.example.secondhand.mapper.GoodsMapper;
+import com.example.secondhand.mapper.BrowseHistoryMapper;
+import com.example.secondhand.mapper.SearchHistoryMapper;
 import com.example.secondhand.mapper.UserMapper;
 import com.example.secondhand.service.GoodsService;
 import com.example.secondhand.vo.GoodsDetailVO;
@@ -20,6 +24,7 @@ import com.example.secondhand.vo.GoodsImageVO;
 import com.example.secondhand.vo.GoodsListVO;
 import com.example.secondhand.vo.SellerVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -29,15 +34,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
     private final GoodsImageMapper goodsImageMapper;
     private final UserMapper userMapper;
+    private final BrowseHistoryMapper browseHistoryMapper;
+    private final SearchHistoryMapper searchHistoryMapper;
 
     @Override
-    public Page<GoodsListVO> listGoods(GoodsQueryDTO query) {
+    public Page<GoodsListVO> listGoods(GoodsQueryDTO query, Long userId) {
         LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
 
         // 默认只展示审核通过的商品
@@ -137,11 +145,22 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }).collect(Collectors.toList());
         voPage.setRecords(voList);
 
+        // 记录搜索历史（已登录 + 有关键词）
+        if (userId != null && StringUtils.hasText(query.getKeyword())) {
+            SearchHistory sh = new SearchHistory();
+            sh.setUserId(userId);
+            sh.setKeyword(query.getKeyword());
+            searchHistoryMapper.insert(sh);
+            log.info("记录搜索历史: userId={}, keyword={}", userId, query.getKeyword());
+        } else {
+            log.debug("跳过搜索历史: userId={}, keyword={}", userId, query.getKeyword());
+        }
+
         return voPage;
     }
 
     @Override
-    public GoodsDetailVO getDetail(Long id) {
+    public GoodsDetailVO getDetail(Long id, Long userId) {
         Goods goods = getById(id);
         if (goods == null) {
             throw new BusinessException(ResultCode.NOT_FOUND);
@@ -187,6 +206,17 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             sellerVO.setNickname(seller.getNickname());
             sellerVO.setAvatar(seller.getAvatar());
             vo.setSeller(sellerVO);
+        }
+
+        // 记录浏览历史（已登录时）
+        if (userId != null) {
+            BrowseHistory bh = new BrowseHistory();
+            bh.setUserId(userId);
+            bh.setGoodsId(id);
+            browseHistoryMapper.insert(bh);
+            log.info("记录浏览历史: userId={}, goodsId={}", userId, id);
+        } else {
+            log.debug("跳过浏览历史: userId=null, goodsId={}", id);
         }
 
         return vo;

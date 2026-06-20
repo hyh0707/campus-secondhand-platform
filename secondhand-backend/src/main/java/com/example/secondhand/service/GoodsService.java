@@ -12,14 +12,14 @@ import com.example.secondhand.vo.GoodsListVO;
 public interface GoodsService extends IService<Goods> {
 
     /**
-     * 商品列表（分页 + 筛选）
+     * 商品列表（分页 + 筛选），userId 为 null 时不记录搜索历史
      */
-    Page<GoodsListVO> listGoods(GoodsQueryDTO query);
+    Page<GoodsListVO> listGoods(GoodsQueryDTO query, Long userId);
 
     /**
-     * 商品详情
+     * 商品详情，userId 为 null 时不记录浏览历史
      */
-    GoodsDetailVO getDetail(Long id);
+    GoodsDetailVO getDetail(Long id, Long userId);
 
     /**
      * 发布商品

@@ -21,20 +21,22 @@ public class GoodsController {
     private final GoodsService goodsService;
 
     /**
-     * 商品列表（匿名可访问）
+     * 商品列表（匿名可访问，已登录时记录搜索历史）
      */
     @GetMapping("/list")
     public Result<Page<GoodsListVO>> list(GoodsQueryDTO query) {
-        Page<GoodsListVO> page = goodsService.listGoods(query);
+        Long userId = UserContext.getUserId();
+        Page<GoodsListVO> page = goodsService.listGoods(query, userId);
         return Result.success(page);
     }
 
     /**
-     * 商品详情（匿名可访问）
+     * 商品详情（匿名可访问，已登录时记录浏览历史）
      */
     @GetMapping("/detail/{id}")
     public Result<GoodsDetailVO> detail(@PathVariable Long id) {
-        GoodsDetailVO vo = goodsService.getDetail(id);
+        Long userId = UserContext.getUserId();
+        GoodsDetailVO vo = goodsService.getDetail(id, userId);
         return Result.success(vo);
     }
 

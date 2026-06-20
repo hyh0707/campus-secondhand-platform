@@ -7,17 +7,22 @@ import com.example.secondhand.dto.AdminAuditDTO;
 import com.example.secondhand.dto.AdminDemandQueryDTO;
 import com.example.secondhand.dto.AdminGoodsQueryDTO;
 import com.example.secondhand.dto.AdminLoginDTO;
+import com.example.secondhand.dto.AdminOrderQueryDTO;
 import com.example.secondhand.dto.AdminUserQueryDTO;
 import com.example.secondhand.dto.AdminUserStatusDTO;
 import com.example.secondhand.service.AdminDemandService;
 import com.example.secondhand.service.AdminGoodsService;
+import com.example.secondhand.service.AdminOrderService;
 import com.example.secondhand.service.AdminService;
+import com.example.secondhand.service.AdminStatisticsService;
 import com.example.secondhand.service.AdminUserService;
 import com.example.secondhand.utils.UserContext;
 import com.example.secondhand.vo.AdminDemandVO;
 import com.example.secondhand.vo.AdminGoodsVO;
 import com.example.secondhand.vo.AdminLoginVO;
+import com.example.secondhand.vo.AdminOrderVO;
 import com.example.secondhand.vo.AdminProfileVO;
+import com.example.secondhand.vo.AdminStatisticsVO;
 import com.example.secondhand.vo.AdminUserVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +37,8 @@ public class AdminController {
     private final AdminGoodsService adminGoodsService;
     private final AdminDemandService adminDemandService;
     private final AdminUserService adminUserService;
+    private final AdminOrderService adminOrderService;
+    private final AdminStatisticsService adminStatisticsService;
 
     /**
      * 管理员登录
@@ -127,6 +134,30 @@ public class AdminController {
         requireAdmin();
         adminUserService.updateStatus(id, dto.getStatus());
         return Result.success();
+    }
+
+    // ==================== 订单管理 ====================
+
+    /**
+     * 管理员订单列表（需管理员登录）
+     */
+    @GetMapping("/order/list")
+    public Result<Page<AdminOrderVO>> orderList(AdminOrderQueryDTO query) {
+        requireAdmin();
+        Page<AdminOrderVO> page = adminOrderService.listOrders(query);
+        return Result.success(page);
+    }
+
+    // ==================== 平台统计 ====================
+
+    /**
+     * 平台统计概览（需管理员登录）
+     */
+    @GetMapping("/statistics/overview")
+    public Result<AdminStatisticsVO> statisticsOverview() {
+        requireAdmin();
+        AdminStatisticsVO vo = adminStatisticsService.overview();
+        return Result.success(vo);
     }
 
     // ==================== 私有方法 ====================

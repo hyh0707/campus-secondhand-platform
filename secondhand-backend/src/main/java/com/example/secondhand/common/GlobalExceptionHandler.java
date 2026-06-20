@@ -2,6 +2,7 @@ package com.example.secondhand.common;
 
 import com.example.secondhand.config.AuthException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -92,6 +93,28 @@ public class GlobalExceptionHandler {
     public Result<Void> handleMultipartException(org.springframework.web.multipart.MultipartException e) {
         log.warn("文件上传异常: {}", e.getMessage());
         return Result.error(ResultCode.BAD_REQUEST.getCode(), "文件上传失败");
+    }
+
+    /**
+     * 唯一键冲突异常（兜底：如果业务层没提前校验，数据库仍报唯一约束）
+     */
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> handleDuplicateKeyException(DuplicateKeyException e) {
+        log.warn("唯一键冲突: {}", e.getMessage());
+        String message = e.getMessage();
+        if (message != null) {
+            if (message.contains("uk_user_phone")) {
+                return Result.error(ResultCode.BAD_REQUEST.getCode(), "手机号已被注册");
+            }
+            if (message.contains("uk_user_email")) {
+                return Result.error(ResultCode.BAD_REQUEST.getCode(), "邮箱已被注册");
+            }
+            if (message.contains("uk_user_username") || message.contains("uk_username")) {
+                return Result.error(ResultCode.BAD_REQUEST.getCode(), "用户名已存在");
+            }
+        }
+        return Result.error(ResultCode.BAD_REQUEST.getCode(), "数据重复，请检查后重试");
     }
 
     /**

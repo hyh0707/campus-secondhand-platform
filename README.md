@@ -46,7 +46,7 @@ campus-secondhand-platform/
 | 阶段十 | 管理员用户管理 | ✅ 已完成 |
 | 阶段十一 | 管理员订单查看与平台统计 | ✅ 已完成 |
 | 阶段十二 | 智能匹配与推荐算法 | ✅ 已完成 |
-| 阶段十三 | Web 用户端开发 | ⏳ 待开始 |
+| 阶段十三 | Web 用户端基础框架与登录注册 | ✅ 已完成 |
 | 阶段十四 | Web 管理后台开发 | ⏳ 待开始 |
 | 阶段十五 | Android 端开发 | ⏳ 待开始 |
 | 阶段十六 | 部署与测试 | ⏳ 待开始 |
@@ -73,7 +73,25 @@ mvn spring-boot:run
 
 启动后访问：`http://localhost:8080/api/health`
 
-### 3. 配置说明
+### 3. Web 用户端启动
+
+```bash
+cd secondhand-web-user
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+启动后访问：`http://localhost:5173`
+
+**前端技术栈**：Vue 3 + Vite + Element Plus + Vue Router + Pinia + Axios
+
+**默认测试账号**：student001 / 123456
+
+### 4. 配置说明
 
 数据库连接配置在 `secondhand-backend/src/main/resources/application.yml`：
 

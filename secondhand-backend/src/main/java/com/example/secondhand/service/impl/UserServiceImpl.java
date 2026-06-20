@@ -34,6 +34,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException("用户名已存在");
         }
 
+        // 检查手机号是否已存在
+        count = lambdaQuery()
+                .eq(User::getPhone, dto.getPhone())
+                .count();
+        if (count > 0) {
+            throw new BusinessException("手机号已被注册");
+        }
+
+        // 检查邮箱是否已存在
+        count = lambdaQuery()
+                .eq(User::getEmail, dto.getEmail())
+                .count();
+        if (count > 0) {
+            throw new BusinessException("邮箱已被注册");
+        }
+
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(passwordUtils.encode(dto.getPassword()));

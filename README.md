@@ -37,12 +37,13 @@ campus-secondhand-platform/
 | 阶段一 | 项目初始化与规范文档 | ✅ 已完成 |
 | 阶段二 | 数据库设计 | ✅ 已完成 |
 | 阶段三 | 后端基础框架搭建 | ✅ 已完成 |
-| 阶段四 | 后端核心业务开发 | ⏳ 待开始 |
-| 阶段五 | Web 用户端开发 | ⏳ 待开始 |
-| 阶段六 | Web 管理后台开发 | ⏳ 待开始 |
-| 阶段七 | Android 端开发 | ⏳ 待开始 |
-| 阶段八 | 推荐算法实现 | ⏳ 待开始 |
-| 阶段九 | 部署与测试 | ⏳ 待开始 |
+| 阶段四 | 登录认证 + 权限控制 + 图片上传 | ✅ 已完成 |
+| 阶段五 | 后端核心业务开发 | ⏳ 待开始 |
+| 阶段六 | Web 用户端开发 | ⏳ 待开始 |
+| 阶段七 | Web 管理后台开发 | ⏳ 待开始 |
+| 阶段八 | Android 端开发 | ⏳ 待开始 |
+| 阶段九 | 推荐算法实现 | ⏳ 待开始 |
+| 阶段十 | 部署与测试 | ⏳ 待开始 |
 
 ## 快速开始
 
@@ -76,4 +77,47 @@ spring:
     url: jdbc:mysql://localhost:3306/campus_secondhand
     username: root
     password: root   # 根据本地 MySQL 修改
+```
+
+---
+
+## 登录认证说明
+
+### 测试账号
+
+| 角色 | 用户名 | 密码 |
+|------|--------|------|
+| 管理员 | admin | 123456 |
+| 普通用户 | student001 | 123456 |
+| 普通用户 | student002 | 123456 |
+
+> 密码使用 BCrypt 加密存储，数据库中的密码字段为密文，不可直接修改。
+
+### Token 使用方式
+
+需要登录的接口在请求头中携带 Token：
+
+```
+Authorization: Bearer <token>
+```
+
+### 加密方式
+
+- 密码使用 BCrypt 加密存储
+- Token 使用 JWT（HS512），包含 userId、username、userType 信息
+- Token 默认有效期 24 小时
+
+### 图片上传目录说明
+
+- 开发环境上传目录：`secondhand-backend/upload/`
+- 生产环境上传目录：`/www/upload/`
+- 按日期分目录存储，例如 `/upload/2026/06/xxx.jpg`
+- 文件名使用 UUID，避免重名
+- 支持 jpg、jpeg、png、webp 格式，限制 5MB
+
+可在 `application.yml` 中配置：
+```yaml
+file:
+  upload-path: ./upload/      # 上传目录
+  access-prefix: /upload/     # 访问前缀
 ```

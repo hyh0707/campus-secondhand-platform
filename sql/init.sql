@@ -259,15 +259,17 @@ CREATE TABLE `notice` (
 -- -----------------------------------------------------
 -- 管理员数据
 -- -----------------------------------------------------
+-- BCrypt 加密密码: 123456
 INSERT INTO `admin` (`username`, `password`, `nickname`, `role`, `status`) VALUES
-('admin', '123456', '系统管理员', 'admin', 1);
+('admin', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '系统管理员', 'admin', 1);
 
 -- -----------------------------------------------------
 -- 普通用户数据
 -- -----------------------------------------------------
+-- BCrypt 加密密码: 123456
 INSERT INTO `user` (`username`, `password`, `nickname`, `avatar`, `phone`, `email`, `status`) VALUES
-('student001', '123456', '小明', '/upload/avatar/default.png', '13800000001', 'student001@campus.edu', 1),
-('student002', '123456', '小红', '/upload/avatar/default.png', '13800000002', 'student002@campus.edu', 1);
+('student001', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '小明', '/upload/avatar/default.png', '13800000001', 'student001@campus.edu', 1),
+('student002', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '小红', '/upload/avatar/default.png', '13800000002', 'student002@campus.edu', 1);
 
 -- -----------------------------------------------------
 -- 商品分类数据

@@ -31,8 +31,8 @@
           </el-input>
         </div>
         <div class="hero-tags">
-          <span class="hero-tag" v-for="tag in hotTags" :key="tag" @click="keyword = tag; handleSearch()">
-            {{ tag }}
+          <span class="hero-tag" v-for="tag in hotTags" :key="tag.name" @click="goSearch(tag.name)">
+            {{ tag.label }}
           </span>
         </div>
       </div>
@@ -76,23 +76,20 @@
       </div>
     </section>
 
-    <!-- 商品推荐占位 -->
+    <!-- 最新商品 -->
     <section class="recommend">
       <div class="section-header">
-        <h2 class="section-title">热门推荐</h2>
-        <p class="section-desc">为你精选校园好物</p>
+        <h2 class="section-title">最新商品</h2>
+        <p class="section-desc">发现校园最新好物</p>
       </div>
-      <div class="goods-grid">
-        <div class="goods-card glass-card" v-for="i in 8" :key="i">
-          <div class="goods-img-placeholder">
-            <el-icon :size="40"><PictureFilled /></el-icon>
-          </div>
-          <div class="goods-info">
-            <div class="goods-title-placeholder"></div>
-            <div class="goods-price-placeholder"></div>
-          </div>
-        </div>
+      <div v-if="loading" class="loading-state">
+        <el-icon :size="32" class="loading-icon"><Loading /></el-icon>
+        <p>加载中...</p>
       </div>
+      <div v-else-if="goodsList.length > 0" class="goods-grid">
+        <GoodsCard v-for="item in goodsList" :key="item.id" :goods="item" />
+      </div>
+      <EmptyState v-else description="暂无商品，敬请期待" />
       <div class="section-more">
         <router-link to="/goods" class="btn-outline">查看更多商品</router-link>
       </div>
@@ -101,20 +98,51 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Search, Goods, Connection, ChatDotRound, PictureFilled } from '@element-plus/icons-vue'
+import { Search, Goods, Connection, ChatDotRound, Loading } from '@element-plus/icons-vue'
+import { getGoodsList } from '../api/goods'
+import GoodsCard from '../components/GoodsCard.vue'
+import EmptyState from '../components/EmptyState.vue'
 
 const router = useRouter()
 const keyword = ref('')
+const goodsList = ref([])
+const loading = ref(false)
 
-const hotTags = ['自行车', '教材', '电子产品', '运动器材', '生活用品']
+const hotTags = [
+  { name: '数码', label: '数码产品' },
+  { name: '教材', label: '图书教材' },
+  { name: '生活', label: '生活用品' },
+  { name: '运动', label: '运动器材' },
+  { name: '电子', label: '电子产品' }
+]
 
 function handleSearch() {
   if (keyword.value.trim()) {
     router.push({ path: '/goods', query: { keyword: keyword.value } })
   }
 }
+
+function goSearch(keyword) {
+  router.push({ path: '/goods', query: { keyword } })
+}
+
+async function fetchGoods() {
+  loading.value = true
+  try {
+    const res = await getGoodsList({ pageNum: 1, pageSize: 8 })
+    goodsList.value = res.data?.records || []
+  } catch {
+    goodsList.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchGoods()
+})
 </script>
 
 <style scoped>
@@ -203,6 +231,7 @@ function handleSearch() {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border: none;
   border-radius: 0 12px 12px 0;
+  padding: 0;
 }
 .search-btn {
   height: 50px;
@@ -266,6 +295,9 @@ function handleSearch() {
   text-align: center;
   cursor: default;
 }
+.feature-card:hover {
+  transform: translateY(-2px);
+}
 .feature-card h3 {
   font-size: 16px;
   font-weight: 600;
@@ -290,7 +322,7 @@ function handleSearch() {
 .fc-icon-3 { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
 .fc-icon-4 { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
 
-/* 推荐 */
+/* 推荐商品 */
 .recommend {
   max-width: 1200px;
   margin: 60px auto 0;
@@ -301,33 +333,22 @@ function handleSearch() {
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
-.goods-card {
-  padding: 0;
-  overflow: hidden;
-}
-.goods-img-placeholder {
-  height: 160px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(6, 182, 212, 0.05));
+.loading-state {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 60px 24px;
   color: var(--text-muted);
+  font-size: 14px;
+  gap: 12px;
 }
-.goods-info {
-  padding: 16px;
+.loading-icon {
+  animation: spin 1s linear infinite;
 }
-.goods-title-placeholder {
-  height: 14px;
-  width: 80%;
-  background: rgba(148, 163, 184, 0.15);
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-.goods-price-placeholder {
-  height: 14px;
-  width: 40%;
-  background: rgba(99, 102, 241, 0.15);
-  border-radius: 4px;
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 .section-more {
   text-align: center;

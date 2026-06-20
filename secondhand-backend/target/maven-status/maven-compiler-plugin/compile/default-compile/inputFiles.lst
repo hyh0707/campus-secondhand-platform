@@ -14,6 +14,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\DemandListVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\DemandAddDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\mapper\NoticeMapper.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\AdminDemandServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\AdminServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\UploadImageVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\GoodsQueryDTO.java
@@ -27,6 +28,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\CategoryService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\AdminGoodsServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\DemandUserVO.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminDemandQueryDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminProfileVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminAuditDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\utils\LoginUser.java
@@ -70,6 +72,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\TradeOrderCreateDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\common\GlobalExceptionHandler.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\FavoriteController.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\AdminDemandService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminGoodsVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\config\WebMvcConfig.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\AdminGoodsService.java
@@ -97,6 +100,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\UserLoginVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\GoodsImage.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\BrowseHistoryServiceImpl.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminDemandVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\RecommendRecordServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminLoginVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\User.java

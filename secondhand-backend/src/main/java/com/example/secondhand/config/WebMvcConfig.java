@@ -53,9 +53,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/api/user/login",
                         // 管理员登录
                         "/api/admin/login",
-                        // 商品公开查询（后续实现）
+                        // 商品公开查询
                         "/api/goods/list",
                         "/api/goods/detail/**",
+                        // 求购公开查询
+                        "/api/demand/list",
+                        "/api/demand/detail/**",
                         // 静态资源
                         "/upload/**"
                 );

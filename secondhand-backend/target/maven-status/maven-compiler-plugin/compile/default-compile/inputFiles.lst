@@ -25,8 +25,10 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\BrowseHistory.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\DemandUpdateDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\CategoryService.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\AdminGoodsServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\DemandUserVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminProfileVO.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminAuditDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\utils\LoginUser.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\TradeOrderStatusDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\FavoriteService.java
@@ -68,7 +70,9 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\TradeOrderCreateDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\common\GlobalExceptionHandler.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\FavoriteController.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminGoodsVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\config\WebMvcConfig.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\AdminGoodsService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\HealthController.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\mapper\SearchHistoryMapper.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\mapper\UserMapper.java
@@ -81,6 +85,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\NoticeServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\SearchHistoryServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\UserProfileVO.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminGoodsQueryDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\UserController.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\AdminService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\AdminController.java

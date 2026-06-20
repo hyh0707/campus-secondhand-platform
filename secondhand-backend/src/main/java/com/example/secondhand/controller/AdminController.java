@@ -1,10 +1,15 @@
 package com.example.secondhand.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.secondhand.common.Result;
 import com.example.secondhand.config.AuthException;
+import com.example.secondhand.dto.AdminAuditDTO;
+import com.example.secondhand.dto.AdminGoodsQueryDTO;
 import com.example.secondhand.dto.AdminLoginDTO;
+import com.example.secondhand.service.AdminGoodsService;
 import com.example.secondhand.service.AdminService;
 import com.example.secondhand.utils.UserContext;
+import com.example.secondhand.vo.AdminGoodsVO;
 import com.example.secondhand.vo.AdminLoginVO;
 import com.example.secondhand.vo.AdminProfileVO;
 import jakarta.validation.Valid;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
+    private final AdminGoodsService adminGoodsService;
 
     /**
      * 管理员登录
@@ -32,12 +38,49 @@ public class AdminController {
      */
     @GetMapping("/profile")
     public Result<AdminProfileVO> profile() {
-        // 防御性检查：非 admin 用户拒绝访问
-        if (!"admin".equals(UserContext.getUserType())) {
-            throw new AuthException(403, "无权限访问");
-        }
+        requireAdmin();
         Long adminId = UserContext.getUserId();
         AdminProfileVO vo = adminService.getProfile(adminId);
         return Result.success(vo);
+    }
+
+    // ==================== 商品管理 ====================
+
+    /**
+     * 管理员商品列表（需管理员登录）
+     */
+    @GetMapping("/goods/list")
+    public Result<Page<AdminGoodsVO>> goodsList(AdminGoodsQueryDTO query) {
+        requireAdmin();
+        Page<AdminGoodsVO> page = adminGoodsService.listGoods(query);
+        return Result.success(page);
+    }
+
+    /**
+     * 审核商品（需管理员登录）
+     */
+    @PutMapping("/goods/audit/{id}")
+    public Result<Void> auditGoods(@PathVariable Long id, @Valid @RequestBody AdminAuditDTO dto) {
+        requireAdmin();
+        adminGoodsService.auditGoods(id, dto);
+        return Result.success();
+    }
+
+    /**
+     * 下架商品（需管理员登录）
+     */
+    @PutMapping("/goods/offline/{id}")
+    public Result<Void> offlineGoods(@PathVariable Long id, @RequestBody AdminAuditDTO dto) {
+        requireAdmin();
+        adminGoodsService.offlineGoods(id, dto.getReason());
+        return Result.success();
+    }
+
+    // ==================== 私有方法 ====================
+
+    private void requireAdmin() {
+        if (!"admin".equals(UserContext.getUserType())) {
+            throw new AuthException(403, "无权限访问");
+        }
     }
 }

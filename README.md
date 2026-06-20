@@ -34,9 +34,9 @@ campus-secondhand-platform/
 
 | 阶段 | 内容 | 状态 |
 |------|------|------|
-| 阶段一 | 项目初始化与规范文档 | 🚧 进行中 |
-| 阶段二 | 数据库设计 | ⏳ 待开始 |
-| 阶段三 | 后端基础框架搭建 | ⏳ 待开始 |
+| 阶段一 | 项目初始化与规范文档 | ✅ 已完成 |
+| 阶段二 | 数据库设计 | ✅ 已完成 |
+| 阶段三 | 后端基础框架搭建 | ✅ 已完成 |
 | 阶段四 | 后端核心业务开发 | ⏳ 待开始 |
 | 阶段五 | Web 用户端开发 | ⏳ 待开始 |
 | 阶段六 | Web 管理后台开发 | ⏳ 待开始 |
@@ -46,4 +46,34 @@ campus-secondhand-platform/
 
 ## 快速开始
 
-> 详细启动说明将在各阶段开发完成后补充。
+### 1. 数据库初始化
+
+```bash
+mysql -u root -p < sql/init.sql
+```
+
+### 2. 后端启动
+
+```bash
+cd secondhand-backend
+
+# 使用 Maven Wrapper（推荐）
+./mvnw spring-boot:run
+
+# 或使用本地 Maven
+mvn spring-boot:run
+```
+
+启动后访问：`http://localhost:8080/api/health`
+
+### 3. 配置说明
+
+数据库连接配置在 `secondhand-backend/src/main/resources/application.yml`：
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/campus_secondhand
+    username: root
+    password: root   # 根据本地 MySQL 修改
+```

@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: secondhand-backend
+
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/campus_secondhand?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+  # JSON 日期格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.example.secondhand.entity
+  configuration:
+    # 日志输出（开发阶段开启，上线后关闭）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 驼峰转下划线
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 主键自增
+      id-type: auto
+      # 逻辑删除（后续按需配置）
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 日志配置
+logging:
+  level:
+    com.example.secondhand: debug
+    org.springframework: warn
+
+# 文件上传配置（占位，后续实现）
+file:
+  upload:
+    path: /www/upload/
+    max-size: 10MB
+
+# JWT 配置（占位，后续实现）
+jwt:
+  secret: your-secret-key-change-in-production
+  expiration: 86400000  # 24小时，单位毫秒

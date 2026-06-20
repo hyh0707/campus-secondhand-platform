@@ -1,5 +1,7 @@
 package com.example.secondhand.config;
 
+import com.example.secondhand.entity.User;
+import com.example.secondhand.mapper.UserMapper;
 import com.example.secondhand.utils.JwtUtils;
 import com.example.secondhand.utils.LoginUser;
 import com.example.secondhand.utils.UserContext;
@@ -19,6 +21,7 @@ import java.util.Set;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtils jwtUtils;
+    private final UserMapper userMapper;
 
     /**
      * 可选认证路径：允许匿名访问，但如果携带了有效 token 则解析后注入 UserContext
@@ -70,6 +73,17 @@ public class AuthInterceptor implements HandlerInterceptor {
             // /api/admin/** 必须 admin 身份
             if (requestPath.startsWith("/api/admin/") && !"admin".equals(loginUser.getUserType())) {
                 throw new AuthException(403, "无权限访问");
+            }
+        }
+
+        // 检查用户是否被禁用（管理员除外）
+        if (!"admin".equals(loginUser.getUserType())) {
+            User user = userMapper.selectById(loginUser.getUserId());
+            if (user == null) {
+                throw new AuthException(401, "用户不存在");
+            }
+            if (user.getStatus() == 0) {
+                throw new AuthException(403, "账号已被禁用");
             }
         }
 

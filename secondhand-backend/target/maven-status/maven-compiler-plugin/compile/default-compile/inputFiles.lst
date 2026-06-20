@@ -42,6 +42,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\DemandQueryDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\mapper\BrowseHistoryMapper.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\Notice.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminUserStatusDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\GoodsService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\GoodsListVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\ReportService.java
@@ -58,6 +59,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\utils\UserContext.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\UploadController.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\common\Result.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\AdminUserServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\DemandDetailVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\common\BusinessException.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\DemandServiceImpl.java
@@ -87,6 +89,7 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\mapper\CategoryMapper.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\NoticeServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\SearchHistoryServiceImpl.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminUserQueryDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\UserProfileVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\dto\AdminGoodsQueryDTO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\UserController.java
@@ -101,8 +104,10 @@ D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\exam
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\GoodsImage.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\BrowseHistoryServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminDemandVO.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminUserVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\impl\RecommendRecordServiceImpl.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\vo\AdminLoginVO.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\entity\User.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\TradeOrderService.java
 D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\controller\GoodsController.java
+D:\homework\campus-secondhand-platform\secondhand-backend\src\main\java\com\example\secondhand\service\AdminUserService.java

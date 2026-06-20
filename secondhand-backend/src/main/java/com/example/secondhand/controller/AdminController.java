@@ -7,14 +7,18 @@ import com.example.secondhand.dto.AdminAuditDTO;
 import com.example.secondhand.dto.AdminDemandQueryDTO;
 import com.example.secondhand.dto.AdminGoodsQueryDTO;
 import com.example.secondhand.dto.AdminLoginDTO;
+import com.example.secondhand.dto.AdminUserQueryDTO;
+import com.example.secondhand.dto.AdminUserStatusDTO;
 import com.example.secondhand.service.AdminDemandService;
 import com.example.secondhand.service.AdminGoodsService;
 import com.example.secondhand.service.AdminService;
+import com.example.secondhand.service.AdminUserService;
 import com.example.secondhand.utils.UserContext;
 import com.example.secondhand.vo.AdminDemandVO;
 import com.example.secondhand.vo.AdminGoodsVO;
 import com.example.secondhand.vo.AdminLoginVO;
 import com.example.secondhand.vo.AdminProfileVO;
+import com.example.secondhand.vo.AdminUserVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +31,7 @@ public class AdminController {
     private final AdminService adminService;
     private final AdminGoodsService adminGoodsService;
     private final AdminDemandService adminDemandService;
+    private final AdminUserService adminUserService;
 
     /**
      * 管理员登录
@@ -99,6 +104,28 @@ public class AdminController {
     public Result<Void> auditDemand(@PathVariable Long id, @Valid @RequestBody AdminAuditDTO dto) {
         requireAdmin();
         adminDemandService.auditDemand(id, dto);
+        return Result.success();
+    }
+
+    // ==================== 用户管理 ====================
+
+    /**
+     * 管理员用户列表（需管理员登录）
+     */
+    @GetMapping("/user/list")
+    public Result<Page<AdminUserVO>> userList(AdminUserQueryDTO query) {
+        requireAdmin();
+        Page<AdminUserVO> page = adminUserService.listUsers(query);
+        return Result.success(page);
+    }
+
+    /**
+     * 禁用/启用用户（需管理员登录）
+     */
+    @PutMapping("/user/status/{id}")
+    public Result<Void> updateUserStatus(@PathVariable Long id, @Valid @RequestBody AdminUserStatusDTO dto) {
+        requireAdmin();
+        adminUserService.updateStatus(id, dto.getStatus());
         return Result.success();
     }
 

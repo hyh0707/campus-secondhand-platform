@@ -31,7 +31,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             "/api/goods/list",
             "/api/goods/detail/",
             "/api/demand/list",
-            "/api/demand/detail/"
+            "/api/demand/detail/",
+            "/api/recommend/similar/"
     );
 
     @Override

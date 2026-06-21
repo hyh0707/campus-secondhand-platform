@@ -136,6 +136,17 @@
             <p>卖家没有填写描述</p>
           </div>
         </div>
+
+        <!-- 相似商品推荐 -->
+        <div class="similar-section" v-if="similarList.length">
+          <div class="section-header">
+            <h3 class="section-title-text">相似商品推荐</h3>
+            <p class="section-subtitle">基于分类、价格、成色和关键词为你推荐</p>
+          </div>
+          <div class="goods-grid">
+            <RecommendCard v-for="item in similarList" :key="item.id || item.goodsId" :goods="item" />
+          </div>
+        </div>
       </template>
     </div>
 
@@ -170,16 +181,18 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowLeft, Loading, PictureFilled, WarningFilled, Star, StarFilled, ShoppingCart } from '@element-plus/icons-vue'
 import { getGoodsDetail } from '../api/goods'
 import { addFavorite, deleteFavorite, getFavoriteList } from '../api/favorite'
 import { createOrder } from '../api/order'
+import { getSimilarGoods } from '../api/recommend'
 import { conditionLabel, conditionTagType } from '../utils/condition'
 import { getImageUrl } from '../utils/image'
 import { useUserStore } from '../stores/user'
+import RecommendCard from '../components/RecommendCard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -213,6 +226,9 @@ const isMyGoods = computed(() => {
 // 收藏
 const favLoading = ref(false)
 const isFavorited = ref(false)
+
+// 相似商品
+const similarList = ref([])
 
 async function toggleFavorite() {
   if (!isLoggedIn.value) {
@@ -294,6 +310,8 @@ function formatTime(time) {
 
 async function fetchDetail() {
   loading.value = true
+  mainImageError.value = false
+  currentImageIdx.value = 0
   try {
     const id = route.params.id
     const res = await getGoodsDetail(id)
@@ -318,9 +336,41 @@ async function checkFavoriteStatus() {
   }
 }
 
+async function fetchSimilarGoods(goodsId) {
+  similarList.value = []
+  try {
+    const res = await getSimilarGoods(goodsId, { limit: 6 })
+    const list = res.data || []
+    // 过滤掉当前商品本身
+    similarList.value = list.filter(item => {
+      const id = item.id || item.goodsId
+      return String(id) !== String(goodsId)
+    })
+  } catch {
+    // 静默忽略
+  }
+}
+
+async function loadAll() {
+  const id = route.params.id
+  if (!id) return
+  await fetchDetail()
+  fetchSimilarGoods(id)
+}
+
 onMounted(() => {
-  fetchDetail()
+  loadAll()
 })
+
+watch(
+  () => route.params.id,
+  (newId, oldId) => {
+    if (newId && newId !== oldId) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      loadAll()
+    }
+  }
+)
 </script>
 
 <style scoped>
@@ -588,7 +638,37 @@ onMounted(() => {
   font-style: italic;
 }
 
+/* 相似商品推荐 */
+.similar-section {
+  margin-top: 32px;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.section-title-text {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--accent-light), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.goods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
 @media (max-width: 768px) {
+  .goods-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .detail-main {
     grid-template-columns: 1fr;
     gap: 20px;

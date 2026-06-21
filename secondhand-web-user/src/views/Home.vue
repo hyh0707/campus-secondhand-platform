@@ -76,6 +76,33 @@
       </div>
     </section>
 
+    <!-- 智能推荐 -->
+    <section class="recommend smart-recommend">
+      <div class="section-header">
+        <h2 class="section-title gradient-title">智能推荐</h2>
+        <p class="section-desc">根据你的浏览、搜索、收藏和求购记录生成推荐</p>
+      </div>
+
+      <!-- 未登录 -->
+      <div v-if="!isLoggedIn" class="login-prompt glass-card">
+        <el-icon :size="36" class="prompt-icon"><Connection /></el-icon>
+        <p>登录后可查看个性化智能推荐</p>
+        <router-link to="/login" class="btn-primary">立即登录</router-link>
+      </div>
+
+      <!-- 登录后 -->
+      <template v-else>
+        <div v-if="recLoading" class="loading-state">
+          <el-icon :size="32" class="loading-icon"><Loading /></el-icon>
+          <p>正在生成推荐...</p>
+        </div>
+        <div v-else-if="recList.length > 0" class="goods-grid">
+          <RecommendCard v-for="item in recList" :key="item.goodsId" :goods="item" />
+        </div>
+        <EmptyState v-else description="暂无推荐，去发布求购获取精准匹配" />
+      </template>
+    </section>
+
     <!-- 最新商品 -->
     <section class="recommend">
       <div class="section-header">
@@ -98,17 +125,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search, Goods, Connection, ChatDotRound, Loading } from '@element-plus/icons-vue'
 import { getGoodsList } from '../api/goods'
+import { getRecommendGoods } from '../api/recommend'
 import GoodsCard from '../components/GoodsCard.vue'
+import RecommendCard from '../components/RecommendCard.vue'
 import EmptyState from '../components/EmptyState.vue'
+import { useUserStore } from '../stores/user'
 
 const router = useRouter()
+const userStore = useUserStore()
 const keyword = ref('')
 const goodsList = ref([])
 const loading = ref(false)
+const recList = ref([])
+const recLoading = ref(false)
+
+const isLoggedIn = computed(() => userStore.isLoggedIn())
 
 const hotTags = [
   { name: '数码', label: '数码产品' },
@@ -140,7 +175,21 @@ async function fetchGoods() {
   }
 }
 
+async function fetchRecommend() {
+  if (!isLoggedIn.value) return
+  recLoading.value = true
+  try {
+    const res = await getRecommendGoods({ limit: 8 })
+    recList.value = res.data || []
+  } catch {
+    recList.value = []
+  } finally {
+    recLoading.value = false
+  }
+}
+
 onMounted(() => {
+  fetchRecommend()
   fetchGoods()
 })
 </script>
@@ -321,6 +370,49 @@ onMounted(() => {
 .fc-icon-2 { background: rgba(6, 182, 212, 0.15); color: var(--accent-light); }
 .fc-icon-3 { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
 .fc-icon-4 { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+/* 智能推荐 */
+.smart-recommend {
+  margin: 40px auto 0;
+}
+.gradient-title {
+  background: linear-gradient(135deg, var(--accent-light), var(--primary-light)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+.login-prompt {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.prompt-icon {
+  color: var(--accent-light);
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+}
 
 /* 推荐商品 */
 .recommend {

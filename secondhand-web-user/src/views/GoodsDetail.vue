@@ -366,7 +366,6 @@ watch(
   () => route.params.id,
   (newId, oldId) => {
     if (newId && newId !== oldId) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
       loadAll()
     }
   }

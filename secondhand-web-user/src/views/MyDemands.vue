@@ -78,6 +78,10 @@
                     <el-button size="small" text type="danger">删除</el-button>
                   </template>
                 </el-popconfirm>
+                <a
+                  class="link-match"
+                  @click.prevent="router.push(`/match/demand/${item.id}`)"
+                >智能匹配商品</a>
               </div>
             </div>
           </div>
@@ -529,7 +533,23 @@ onMounted(() => {
 }
 .card-actions {
   display: flex;
+  align-items: center;
   gap: 4px;
+}
+.link-match {
+  font-size: 12px;
+  color: var(--accent-light);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(6,182,212,0.08);
+  border: 1px solid rgba(6,182,212,0.12);
+  margin-left: auto;
+  transition: var(--transition);
+}
+.link-match:hover {
+  background: rgba(6,182,212,0.15);
+  color: var(--accent-light);
 }
 .pagination-wrap {
   display: flex;

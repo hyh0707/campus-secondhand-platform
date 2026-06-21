@@ -79,6 +79,18 @@
                     <el-button size="small" text type="danger">删除</el-button>
                   </template>
                 </el-popconfirm>
+                <a
+                  v-if="item.status === 'approved'"
+                  class="link-match"
+                  @click.prevent="router.push(`/match/goods/${item.id}`)"
+                >匹配求购</a>
+                <el-tooltip
+                  v-else
+                  content="商品上架后可匹配求购"
+                  placement="top"
+                >
+                  <span class="link-match disabled">匹配求购</span>
+                </el-tooltip>
               </div>
             </div>
           </div>
@@ -595,9 +607,31 @@ onMounted(() => {
 }
 .card-actions {
   display: flex;
+  align-items: center;
   gap: 4px;
   padding-top: 10px;
   border-top: 1px solid rgba(99, 102, 241, 0.08);
+}
+.link-match {
+  font-size: 12px;
+  color: var(--accent-light);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(6,182,212,0.08);
+  border: 1px solid rgba(6,182,212,0.12);
+  margin-left: auto;
+  transition: var(--transition);
+}
+.link-match:hover {
+  background: rgba(6,182,212,0.15);
+  color: var(--accent-light);
+}
+.link-match.disabled {
+  color: var(--text-muted);
+  background: rgba(107,114,128,0.06);
+  border-color: transparent;
+  cursor: not-allowed;
 }
 
 .pagination-wrap {

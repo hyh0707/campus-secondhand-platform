@@ -33,6 +33,8 @@
           </el-dropdown>
           <router-link to="/my-goods" class="nav-link">我的商品</router-link>
           <router-link to="/my-demands" class="nav-link">我的求购</router-link>
+          <router-link to="/favorites" class="nav-link">收藏</router-link>
+          <router-link to="/my-orders" class="nav-link">交易</router-link>
           <router-link to="/profile" class="user-area">
             <el-avatar :size="34" :src="avatarUrl" class="user-avatar" @error="handleAvatarError">
               {{ (userStore.userInfo?.nickname || userStore.userInfo?.username || 'U')[0] }}

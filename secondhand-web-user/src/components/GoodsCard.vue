@@ -3,7 +3,7 @@
     <div class="card-img">
       <img
         v-if="goods.mainImage"
-        :src="goods.mainImage"
+        :src="getImageUrl(goods.mainImage)"
         :alt="goods.title"
         @error="handleImageError"
         v-show="!imgError"
@@ -37,6 +37,7 @@
 import { ref, computed } from 'vue'
 import { PictureFilled, View } from '@element-plus/icons-vue'
 import { conditionLabel } from '../utils/condition'
+import { getImageUrl } from '../utils/image'
 
 const props = defineProps({
   goods: { type: Object, required: true }

@@ -48,7 +48,7 @@
             <div class="card-img" @click="goDetail(item.id)">
               <img
                 v-if="item.mainImage"
-                :src="item.mainImage"
+                :src="getImageUrl(item.mainImage)"
                 :alt="item.title"
                 @error="handleImgError"
               />
@@ -116,7 +116,7 @@
               :key="idx"
               class="upload-item"
             >
-              <img :src="img" @error="handleEditPreviewError($event, idx)" />
+              <img :src="getImageUrl(img)" @error="handleEditPreviewError($event, idx)" />
               <div class="upload-item-actions">
                 <el-button circle size="small" type="danger" @click="removeEditImage(idx)">
                   <el-icon :size="14"><Close /></el-icon>
@@ -197,6 +197,7 @@ import { Plus, Loading, PictureFilled, View, Star, FolderOpened, Close } from '@
 import { getMyGoods, getGoodsDetail, updateGoods, deleteGoods } from '../api/goods'
 import { uploadImage } from '../api/upload'
 import { conditionLabel, conditionValue } from '../utils/condition'
+import { getImageUrl } from '../utils/image'
 
 const router = useRouter()
 const loading = ref(false)
@@ -327,7 +328,7 @@ async function openEdit(id) {
     editForm.contactInfo = d.contactInfo || ''
     editForm.description = d.description || ''
     editForm.negotiable = d.negotiable ?? 0
-    editImageList.value = (d.images || []).map(img => img.imageUrl)
+    editImageList.value = (d.images || []).map(img => getImageUrl(img.imageUrl))
     editVisible.value = true
   } catch (err) {
     const msg = err?.response?.data?.message || '获取商品信息失败'

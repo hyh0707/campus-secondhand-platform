@@ -48,7 +48,7 @@
                 :class="{ active: currentImageIdx === idx }"
                 @click="currentImageIdx = idx"
               >
-                <img :src="img.imageUrl" :alt="`图片${idx + 1}`" @error="handleThumbError($event, idx)" />
+                <img :src="getImageUrl(img.imageUrl)" :alt="`图片${idx + 1}`" @error="handleThumbError($event, idx)" />
               </div>
             </div>
           </div>
@@ -89,6 +89,29 @@
               </div>
             </div>
 
+            <!-- 操作按钮 -->
+            <div class="action-row" v-if="isLoggedIn && !isMyGoods">
+              <el-button
+                :type="isFavorited ? 'warning' : 'default'"
+                size="large"
+                :loading="favLoading"
+                @click="toggleFavorite"
+                class="action-btn"
+              >
+                <el-icon><StarFilled v-if="isFavorited" /><Star v-else /></el-icon>
+                {{ isFavorited ? '取消收藏' : '收藏' }}
+              </el-button>
+              <el-button
+                type="primary"
+                size="large"
+                @click="openBuyDialog"
+                class="action-btn buy-btn"
+              >
+                <el-icon><ShoppingCart /></el-icon>
+                我想要
+              </el-button>
+            </div>
+
             <!-- 卖家信息 -->
             <div class="seller-card glass-card">
               <div class="seller-header">
@@ -96,6 +119,7 @@
                 <div class="seller-info">
                   <span class="seller-name">{{ goods.seller?.nickname || goods.seller?.username }}</span>
                   <span class="seller-username">@{{ goods.seller?.username }}</span>
+                  <span class="seller-tag" v-if="isMyGoods">我的商品</span>
                 </div>
               </div>
             </div>
@@ -114,17 +138,52 @@
         </div>
       </template>
     </div>
+
+    <!-- 购买意向弹窗 -->
+    <el-dialog
+      v-model="buyDialogVisible"
+      title="发起购买意向"
+      width="460px"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="buyForm" label-position="top" size="large">
+        <el-form-item label="商品">
+          <span class="buy-goods-title">{{ goods?.title }}</span>
+        </el-form-item>
+        <el-form-item label="留言">
+          <el-input
+            v-model="buyForm.message"
+            type="textarea"
+            :rows="3"
+            placeholder="你好，我想购买这个商品，可以线下交易吗？"
+            maxlength="200"
+            show-word-limit
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="buyDialogVisible = false">取消</el-button>
+        <el-button type="primary" :loading="buySubmitting" @click="handleBuySubmit">提交意向</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { ArrowLeft, Loading, PictureFilled, WarningFilled } from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { ArrowLeft, Loading, PictureFilled, WarningFilled, Star, StarFilled, ShoppingCart } from '@element-plus/icons-vue'
 import { getGoodsDetail } from '../api/goods'
+import { addFavorite, deleteFavorite, getFavoriteList } from '../api/favorite'
+import { createOrder } from '../api/order'
 import { conditionLabel, conditionTagType } from '../utils/condition'
+import { getImageUrl } from '../utils/image'
+import { useUserStore } from '../stores/user'
 
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
 const goods = ref(null)
 const loading = ref(true)
 const currentImageIdx = ref(0)
@@ -134,7 +193,7 @@ const currentImage = computed(() => {
   if (mainImageError.value) return ''
   const images = goods.value?.images
   if (!images?.length) return ''
-  return images[currentImageIdx.value]?.imageUrl || ''
+  return getImageUrl(images[currentImageIdx.value]?.imageUrl)
 })
 
 const conditionText = computed(() => conditionLabel(goods.value?.conditionLevel))
@@ -144,6 +203,81 @@ const descriptionLines = computed(() => {
   if (!goods.value?.description) return []
   return goods.value.description.split('\n').filter(Boolean)
 })
+
+const isLoggedIn = computed(() => userStore.isLoggedIn())
+const isMyGoods = computed(() => {
+  if (!goods.value?.seller?.id || !userStore.userInfo?.id) return false
+  return goods.value.seller.id === userStore.userInfo.id
+})
+
+// 收藏
+const favLoading = ref(false)
+const isFavorited = ref(false)
+
+async function toggleFavorite() {
+  if (!isLoggedIn.value) {
+    router.push('/login')
+    return
+  }
+  if (!goods.value) return
+  favLoading.value = true
+  try {
+    if (isFavorited.value) {
+      await deleteFavorite(goods.value.id)
+      isFavorited.value = false
+      ElMessage.success('已取消收藏')
+    } else {
+      await addFavorite(goods.value.id)
+      isFavorited.value = true
+      ElMessage.success('收藏成功')
+    }
+  } catch (err) {
+    const msg = err?.response?.data?.message || ''
+    if (msg.includes('已收藏')) {
+      // 后端已收藏，视为收藏成功
+      isFavorited.value = true
+    } else {
+      ElMessage.error(msg || '操作失败')
+    }
+  } finally {
+    favLoading.value = false
+  }
+}
+
+// 购买意向弹窗
+const buyDialogVisible = ref(false)
+const buySubmitting = ref(false)
+const buyForm = ref({ message: '' })
+
+function openBuyDialog() {
+  if (!isLoggedIn.value) {
+    router.push('/login')
+    return
+  }
+  buyForm.value.message = ''
+  buyDialogVisible.value = true
+}
+
+async function handleBuySubmit() {
+  if (!buyForm.value.message.trim()) {
+    ElMessage.warning('请填写留言')
+    return
+  }
+  buySubmitting.value = true
+  try {
+    await createOrder({
+      goodsId: goods.value.id,
+      message: buyForm.value.message.trim()
+    })
+    ElMessage.success('交易意向已提交，请等待卖家处理')
+    buyDialogVisible.value = false
+  } catch (err) {
+    const msg = err?.response?.data?.message || '提交失败，请稍后重试'
+    ElMessage.error(msg)
+  } finally {
+    buySubmitting.value = false
+  }
+}
 
 function handleMainImageError() {
   mainImageError.value = true
@@ -164,10 +298,23 @@ async function fetchDetail() {
     const id = route.params.id
     const res = await getGoodsDetail(id)
     goods.value = res.data
+    // 登录后检查收藏状态
+    await checkFavoriteStatus()
   } catch {
     goods.value = null
   } finally {
     loading.value = false
+  }
+}
+
+async function checkFavoriteStatus() {
+  if (!isLoggedIn.value || !goods.value) return
+  try {
+    const res = await getFavoriteList({ pageNum: 1, pageSize: 100 })
+    const records = res.data?.records || res.data?.list || res.data || []
+    isFavorited.value = records.some((item) => item.goodsId === goods.value.id)
+  } catch {
+    // 无法查询收藏状态时不做处理
   }
 }
 
@@ -383,6 +530,39 @@ onMounted(() => {
 .seller-username {
   font-size: 12px;
   color: var(--text-muted);
+}
+.seller-tag {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+/* 操作按钮 */
+.action-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.action-btn {
+  flex: 1;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600;
+  height: 44px;
+}
+.buy-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+  border: none !important;
+}
+.buy-btn:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary)) !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+}
+.buy-goods-title {
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 /* 描述 */

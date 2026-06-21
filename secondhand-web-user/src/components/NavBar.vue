@@ -14,11 +14,25 @@
 
       <div class="nav-right">
         <template v-if="userStore.isLoggedIn()">
-          <router-link to="/publish" class="btn-primary btn-sm">
-            <el-icon><Plus /></el-icon>
-            发布
-          </router-link>
+          <el-dropdown trigger="click">
+            <span class="btn-primary btn-sm publish-btn">
+              <el-icon><Plus /></el-icon>
+              发布
+              <el-icon class="arrow-icon"><ArrowDown /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link to="/publish" class="dropdown-link">发布商品</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/publish-demand" class="dropdown-link">发布求购</router-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <router-link to="/my-goods" class="nav-link">我的商品</router-link>
+          <router-link to="/my-demands" class="nav-link">我的求购</router-link>
           <router-link to="/profile" class="user-area">
             <el-avatar :size="34" :src="avatarUrl" class="user-avatar" @error="handleAvatarError">
               {{ (userStore.userInfo?.nickname || userStore.userInfo?.username || 'U')[0] }}
@@ -37,7 +51,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, ArrowDown } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
 const userStore = useUserStore()
 
@@ -140,6 +154,22 @@ function handleAvatarError() {
 }
 .user-avatar {
   flex-shrink: 0;
+}
+.publish-btn {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.arrow-icon {
+  font-size: 12px;
+  margin-left: -2px;
+}
+.dropdown-link {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
 }
 .user-name {
   font-size: 13px;

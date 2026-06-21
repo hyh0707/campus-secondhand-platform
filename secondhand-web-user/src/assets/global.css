@@ -94,6 +94,33 @@ a {
   color: var(--text-muted) !important;
 }
 
+/* ---- Dropdown 下拉菜单 ---- */
+.el-dropdown-menu {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.08) !important;
+  padding: 6px !important;
+}
+.el-dropdown-menu__item {
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  transition: var(--transition) !important;
+  padding: 8px 14px !important;
+  margin: 2px 0;
+}
+.el-dropdown-menu__item:hover {
+  color: var(--text-primary) !important;
+  background: rgba(99, 102, 241, 0.12) !important;
+}
+.el-dropdown-menu__item:not(.is-disabled):focus {
+  color: var(--primary-light) !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+}
+
 .el-message {
   background: var(--bg-card) !important;
   border: 1px solid var(--border-glass) !important;

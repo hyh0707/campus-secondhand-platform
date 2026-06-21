@@ -34,13 +34,13 @@ const routes = [
       {
         path: 'users',
         name: 'AdminUsers',
-        component: () => import('../views/Placeholder.vue'),
+        component: () => import('../views/AdminUsers.vue'),
         meta: { title: '用户管理', requiresAuth: true }
       },
       {
         path: 'orders',
         name: 'AdminOrders',
-        component: () => import('../views/Placeholder.vue'),
+        component: () => import('../views/AdminOrders.vue'),
         meta: { title: '订单管理', requiresAuth: true }
       }
     ]

@@ -22,13 +22,13 @@ const routes = [
       {
         path: 'goods',
         name: 'AdminGoods',
-        component: () => import('../views/Placeholder.vue'),
+        component: () => import('../views/AdminGoods.vue'),
         meta: { title: '商品审核', requiresAuth: true }
       },
       {
         path: 'demands',
         name: 'AdminDemands',
-        component: () => import('../views/Placeholder.vue'),
+        component: () => import('../views/AdminDemands.vue'),
         meta: { title: '求购审核', requiresAuth: true }
       },
       {

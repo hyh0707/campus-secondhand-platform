@@ -17,9 +17,11 @@ export function getImageUrl(url) {
   if (str.startsWith('/upload/')) return str
   // 缺少前导斜杠
   if (str.startsWith('upload/')) return '/' + str
-  // 缺少 /upload 前缀，如 /goods/xxx 或 goods/xxx
+  // 缺少 /upload 前缀
   if (str.startsWith('/goods/')) return '/upload' + str
   if (str.startsWith('goods/')) return '/upload/' + str
+  if (str.startsWith('/avatar/')) return '/upload' + str
+  if (str.startsWith('avatar/')) return '/upload/' + str
   // 日期路径如 2026/06/xxx.png
   if (/^\d{4}\/\d{2}\//.test(str)) return '/upload/' + str
   // 其他相对路径

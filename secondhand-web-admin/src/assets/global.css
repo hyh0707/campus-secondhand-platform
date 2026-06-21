@@ -86,3 +86,49 @@ a { color: var(--accent); text-decoration: none; }
   background: var(--bg-card-hover);
   border-color: rgba(99, 102, 241, 0.35);
 }
+
+/* ========== 管理后台弹窗 ========== */
+.admin-dialog {
+  --el-dialog-bg-color: var(--bg-card);
+  --el-dialog-border-radius: var(--radius);
+}
+.admin-dialog .el-dialog {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius);
+}
+.admin-dialog .el-dialog__header {
+  border-bottom: 1px solid var(--border-glass);
+  padding: 20px 24px;
+}
+.admin-dialog .el-dialog__title {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.admin-dialog .el-dialog__body {
+  color: var(--text-secondary);
+  padding: 24px;
+}
+.admin-dialog .el-dialog__footer {
+  padding: 0 24px 20px;
+}
+.admin-dialog .el-dialog__headerbtn {
+  top: 20px;
+  right: 24px;
+}
+.admin-dialog .el-dialog__headerbtn .el-dialog__close {
+  color: var(--text-muted);
+}
+.admin-dialog .el-dialog__headerbtn:hover .el-dialog__close {
+  color: var(--text-primary);
+}
+.admin-dialog .el-input__inner,
+.admin-dialog .el-textarea__inner {
+  background: var(--bg-dark);
+  border-color: var(--border-glass);
+  color: var(--text-primary);
+}
+.admin-dialog .el-input__inner::placeholder,
+.admin-dialog .el-textarea__inner::placeholder {
+  color: var(--text-muted);
+}

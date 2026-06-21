@@ -87,6 +87,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, List } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
+import { getImageUrl } from '../utils/image'
 import { getMyGoods } from '../api/goods'
 import { getMyDemands } from '../api/demand'
 import { getFavoriteList } from '../api/favorite'
@@ -104,7 +105,7 @@ const orderCount    = ref(0)
 
 const avatarUrl = computed(() => {
   if (avatarLoadError.value) return ''
-  return userStore.userInfo?.avatar || ''
+  return getImageUrl(userStore.userInfo?.avatar)
 })
 
 function handleAvatarError() {

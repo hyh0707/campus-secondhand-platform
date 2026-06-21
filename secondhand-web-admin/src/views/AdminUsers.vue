@@ -45,12 +45,12 @@
         <!-- 头像 -->
         <div class="user-avatar">
           <img
-            v-if="item.avatar"
             :src="getImageUrl(item.avatar)"
             :alt="item.nickname"
-            @error="e => e.target.style.display = 'none'"
+            @error="e => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }"
+            v-show="item.avatar"
           />
-          <el-icon v-else :size="22"><UserFilled /></el-icon>
+          <el-icon :size="22" :style="{ display: item.avatar ? 'none' : 'flex' }"><UserFilled /></el-icon>
         </div>
 
         <!-- 信息 -->

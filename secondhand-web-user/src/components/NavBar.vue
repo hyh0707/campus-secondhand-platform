@@ -55,13 +55,14 @@
 import { ref, computed } from 'vue'
 import { Plus, ArrowDown } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
+import { getImageUrl } from '../utils/image'
 const userStore = useUserStore()
 
 const avatarLoadError = ref(false)
 
 const avatarUrl = computed(() => {
   if (avatarLoadError.value) return ''
-  return userStore.userInfo?.avatar || ''
+  return getImageUrl(userStore.userInfo?.avatar)
 })
 
 function handleAvatarError() {

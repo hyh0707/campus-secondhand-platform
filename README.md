@@ -49,9 +49,9 @@ campus-secondhand-platform/
 | 阶段十三 | Web 用户端基础框架与登录注册 | ✅ 已完成 |
 | 阶段十四 | Web 用户端商品首页、列表、详情 | ✅ 已完成 |
 | 阶段十五 | Web 用户端发布商品与我的商品 | ✅ 已完成 |
-| 阶段十六 | Web 管理后台开发 | ⏳ 待开始 |
+| 阶段十六 | Web 管理后台开发 | ✅ 已完成 |
 | 阶段十七 | Android 端开发 | ⏳ 待开始 |
-| 阶段十八 | 部署与测试 | ⏳ 待开始 |
+| 阶段十八 | 部署与测试 | ✅ 已完成 |
 
 ## 快速开始
 
@@ -196,6 +196,28 @@ file:
   upload-path: ./upload/      # 上传目录
   access-prefix: /upload/     # 访问前缀
 ```
+
+---
+
+## 打包部署
+
+### Web 用户端打包
+
+```bash
+cd secondhand-web-user
+npm run build
+```
+
+产物输出到 `secondhand-web-user/dist/`，部署端口 5173。
+
+### Web 管理后台打包
+
+```bash
+cd secondhand-web-admin
+npm run build
+```
+
+产物输出到 `secondhand-web-admin/dist/`，部署端口 5174。
 
 ---
 

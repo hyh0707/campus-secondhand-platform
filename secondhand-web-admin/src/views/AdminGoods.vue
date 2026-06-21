@@ -60,9 +60,9 @@
             v-if="item.mainImage"
             :src="getImageUrl(item.mainImage)"
             :alt="item.title"
-            @error="handleImgError"
+            @error="e => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }"
           />
-          <div v-else class="img-ph">
+          <div class="img-ph" :style="{ display: item.mainImage ? 'none' : 'flex' }">
             <el-icon :size="28"><PictureFilled /></el-icon>
           </div>
           <span class="status-badge" :class="'s-' + item.status">{{ goodsStatusLabel(item.status) }}</span>
@@ -142,9 +142,9 @@
               v-if="detailItem.mainImage"
               :src="getImageUrl(detailItem.mainImage)"
               :alt="detailItem.title"
-              @error="e => { e.target.style.display = 'none' }"
+              @error="e => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }"
             />
-            <div v-else class="detail-img-ph">
+            <div class="detail-img-ph" :style="{ display: detailItem.mainImage ? 'none' : 'flex' }">
               <el-icon :size="48"><PictureFilled /></el-icon>
               <span>暂无图片</span>
             </div>
@@ -359,10 +359,6 @@ function handleReset() {
 function handlePageChange(page) {
   query.pageNum = page
   fetchList()
-}
-
-function handleImgError(e) {
-  e.target.style.display = 'none'
 }
 
 function openDetail(item) {

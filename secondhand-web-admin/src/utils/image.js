@@ -10,6 +10,8 @@ export function getImageUrl(url) {
   if (str.startsWith('upload/')) return '/' + str
   if (str.startsWith('/goods/')) return '/upload' + str
   if (str.startsWith('goods/')) return '/upload/' + str
+  if (str.startsWith('/avatar/')) return '/upload' + str
+  if (str.startsWith('avatar/')) return '/upload/' + str
   if (/^\d{4}\/\d{2}\//.test(str)) return '/upload/' + str
   if (str.startsWith('/')) return str
   return '/upload/' + str
